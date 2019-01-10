@@ -1,0 +1,15 @@
+service: yourServiceName
+
+provider:
+  name: aws
+  role: yourLambdaRole
+  runtime: nodejs8.10
+  region: yourRegion
+
+functions:
+  getData:
+    handler: handler.getData
+    events:
+      - http:
+          method: post
+          path: /getData
