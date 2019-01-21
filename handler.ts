@@ -18,15 +18,20 @@ function getCheapestCardPrice(cards: Array<any>): number {
   let cheapest: number = cards[0].price;
   let err: boolean = false;
 
-  for(let el of cards) {
-    if(el.price < cheapest) {
+  for (let el of cards) {
+    if (el.price < cheapest) {
       cheapest = el.price;
-      if(el.available == 0) err = true;
-      else err = false;
+      if (el.available == 0) {
+        err = true;
+      } else {
+        err = false;
+      }
     }
   }
 
-  if(err) console.log('WARNING: ' + cards[0].name + ' not available for purchase');
+  if (err) {
+    console.log(`WARNING: ${cards[0].name} not available for purchase`);
+  }
 
   return cheapest;
 }
@@ -34,14 +39,14 @@ function getCheapestCardPrice(cards: Array<any>): number {
 function getValidCards(cards: Array<any>): Array<any> {
   let results: Array<any> = [];
 
-  for(let i in cards) {
-    if(validSets.includes(cards[i].set)) {
+  for (let i in cards) {
+    if (validSets.includes(cards[i].set)) {
       results.push(cards[i]);
     }
   }
 
-  if(results.length == 0) {
-    throw new Error('ERROR: ' + cards[0].name + ' no card from valid set in database');
+  if (results.length == 0) {
+    throw new Error(`ERROR: ${cards[0].name} no card from valid set in database`);
   }
 
   return results;
@@ -50,8 +55,8 @@ function getValidCards(cards: Array<any>): Array<any> {
 function elementsToArray($: any, selector: any): Array<any> {
   const dest: Array<any> = [];
 
-  $(selector).each(function(i, elem) {
-    if(isNaN(parseFloat($(this).text()))) {
+  $(selector).each(function (i, elem) {
+    if (isNaN(parseFloat($(this).text()))) {
       dest.push($(this).text());
     }
     else {
@@ -78,7 +83,7 @@ async function getSingleCardPrice(cardName: string): Promise<number> {
     }
   }
 
-  if(Object.keys(cards).length == 0) {
+  if (Object.keys(cards).length == 0) {
     throw new Error(cardName + ' not in the database');
   }
 
@@ -106,13 +111,13 @@ module.exports.getData = async function (event: any, context: any, callback: Fun
 
   let i: number = 0;
 
-  for(let card of cards) {
+  for (let card of cards) {
     let cardDetails: Array<string> = card.split(/\s/);
     let amount: number = parseInt(cardDetails.shift());
     let cardName: string = '';
 
-    for(let i=0; i<cardDetails.length; i++) {
-      if(cardDetails[i].charAt(0) !== '(') {
+    for (let i=0; i<cardDetails.length; i++) {
+      if (cardDetails[i].charAt(0) !== '(') {
         cardName += cardDetails.shift() + ' ';
         i--;
       }
